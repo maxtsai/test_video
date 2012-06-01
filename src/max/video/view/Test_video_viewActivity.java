@@ -16,7 +16,7 @@ public class Test_video_viewActivity extends Activity {
      * TODO: Set the path variable to a streaming video URL or a local media
      * file path.
      */
-    private String path = "file:///sdcard/MPEG4.mkv";
+    private String path = "file:///sdcard/sample.mp4";
 	private WindowManager wm = null;
 	private WindowManager.LayoutParams wmParams = null;
 	private myVideoView mVideoView = null;
@@ -59,8 +59,8 @@ public class Test_video_viewActivity extends Activity {
         wmParams.gravity = Gravity.CENTER;
         wmParams.x=0;
         wmParams.y=0;
-        wmParams.width=320;
-        wmParams.height=480;
+        wmParams.width=128;
+        wmParams.height=128;
         wm.addView(mVideoView, wmParams);
     }
     
