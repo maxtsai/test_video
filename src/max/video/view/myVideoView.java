@@ -9,13 +9,11 @@ import android.view.WindowManager;
 
 public class myVideoView extends VideoView {
 
-	private float mTouchStartX;
-    private float mTouchStartY;
-    private float x;
-    private float y;
-    
-    private WindowManager wm=(WindowManager)getContext().getApplicationContext().getSystemService("window");
-    private WindowManager.LayoutParams wmParams = ((MyApplication)getContext().getApplicationContext()).getMywmParams();
+	private WindowManager wm=(WindowManager)getContext().getApplicationContext().getSystemService("window");
+	private WindowManager.LayoutParams wmParams = ((MyApplication)getContext().getApplicationContext()).getMywmParams();
+	
+	private int prevX;
+	private int prevY;
 	
 	
 	public myVideoView(Context context) {
@@ -25,37 +23,29 @@ public class myVideoView extends VideoView {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-	     x = event.getRawX();   
-	     y = event.getRawY();
-	     Log.i("currP", "currX"+x+"====currY"+y);
-	     switch (event.getAction()) {
-	        case MotionEvent.ACTION_DOWN:
-	    		this.stopPlayback();
-	        	mTouchStartX =  event.getX();  
-	        	mTouchStartY =  event.getY();
-	            Log.i("startP", "startX"+mTouchStartX+"====startY"+mTouchStartY);
-	            break;
-	        case MotionEvent.ACTION_MOVE:	            
-	            updateViewPosition();
-	            break;
-
-	        case MotionEvent.ACTION_UP:
-	        	updateViewPosition();
-	        	mTouchStartX=mTouchStartY=0;
-	        	this.start();
-	        	break;
-	     }
-	     return true;
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			prevX = (int) event.getX();
+			prevY = (int) event.getY();
+			this.pause();
+			break;
+		case MotionEvent.ACTION_MOVE:
+			if (Math.abs(event.getX()-prevX)>10 || Math.abs(event.getY()-prevY)>10) {
+				wmParams.x = (int) event.getX();
+				wmParams.y = (int) event.getY();
+				wm.updateViewLayout(this, wmParams);
+			}
+			prevX = (int) event.getX();
+			prevY = (int) event.getY();
+			break;
+		case MotionEvent.ACTION_UP:
+			//wmParams.x -= 50;
+			//wmParams.y -= 50;
+			//wm.updateViewLayout(this, wmParams);
+			this.start();
+			break;
+		}
+		return true;
 	}
-	
-	 private void updateViewPosition(){
-		//wmParams.x=(int) (x-mTouchStartX);
-		//wmParams.y=(int) (y-mTouchStartY);
-		 wmParams.x=(int) x;
-		 wmParams.y=(int) y;
-
-	    wm.updateViewLayout(this, wmParams);
-	    
-	 }
 
 }

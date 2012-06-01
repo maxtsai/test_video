@@ -70,9 +70,4 @@ public class Test_video_viewActivity extends Activity {
     	wm.removeView(mVideoView);
     }
     
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		Log.d("myVideoView", "### touched");
-		return true;
-	}
 }
